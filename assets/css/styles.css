@@ -1,0 +1,597 @@
+/* Minimal modern academic site styles - mobile first */
+
+/* =========================
+   THEME + TYPOGRAPHY
+   ========================= */
+:root{
+  --bg: #FAFBFB;
+  --card: #FFFFFF;
+  --text: #0F1724;      /* near-black */
+  --muted: #6B7280;     /* gray */
+  --accent: #2F6F9F;
+  --link-color: #6878AE;    /* hyperlinks */
+  --icon-color: #EFCED1;    /* icons and buttons */
+  --radius: 12px;
+  --max-width: 1400px;
+  --section-alt: #F4F6F7;
+  --aside-width: 360px;
+
+  /* Fonts */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-head: "Google Sans", "Product Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* CV timeline geometry */
+  --cv-line-x: 10px;           /* move line further left */
+  --cv-dot-size: 14px;
+  --cv-dot-border: 3px;
+  --cv-left-pad: 4rem;         /* add more padding so logos/text never overlap the line */
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family: var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  scroll-behavior:smooth;
+}
+
+/* Headings / titles use Google Sans */
+h1,h2,h3,.brand,.name{
+  font-family: var(--font-head);
+}
+
+/* Global hyperlink styling */
+a{
+  color:var(--link-color);
+  text-decoration:underline;
+  transition:opacity 0.2s ease;
+}
+a:hover{
+  opacity:0.8;
+}
+
+.container{max-width:var(--max-width);margin:0 auto;padding:1.25rem}
+.header-inner{display:flex;align-items:center;gap:1rem}
+
+.skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{left:1rem;top:1rem;width:auto;height:auto;padding:.5rem .75rem;background:#000;color:#fff;border-radius:6px}
+
+/* =========================
+   HEADER / NAV
+   ========================= */
+.site-header{
+  position:fixed;top:0;left:0;right:0;
+  backdrop-filter: blur(6px);
+  z-index:9999;
+  background:rgba(255,255,255,0.96);
+  box-shadow:0 1px 0 rgba(12,20,30,0.04);
+}
+.site-header .container{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem 1.25rem;
+}
+.brand{
+  font-size:1.15rem;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:700;
+}
+.nav-toggle{display:inline-flex;background:none;border:0;padding:.25rem;color:var(--icon-color)}
+.nav-toggle:focus{outline:2px solid var(--icon-color);outline-offset:3px}
+
+.site-nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
+.site-nav a{color:var(--text);text-decoration:none;font-weight:500;padding:.25rem}
+.site-nav a:hover{color:var(--link-color);opacity:1}
+.site-nav a.active{
+  color:var(--link-color);
+  font-weight:700;
+  border-bottom:2px solid var(--link-color);
+  padding-bottom:.35rem;
+}
+
+/* Responsive header */
+@media (max-width:700px){
+  .nav-toggle{display:inline-flex}
+  .site-nav{
+    position:absolute;right:1.25rem;top:64px;
+    background:var(--card);
+    box-shadow:0 8px 20px rgba(11,17,24,0.06);
+    border-radius:10px;
+    padding:.75rem;
+    display:none;
+  }
+  .site-nav[data-open="true"]{display:block}
+  .site-nav ul{flex-direction:column}
+}
+@media (min-width:701px){
+  .nav-toggle{display:none}
+  .site-nav{display:block}
+}
+
+/* Ensure main content isn't hidden under fixed header */
+main{padding-top:4.2rem}
+
+/* =========================
+   SECTIONS / LAYOUT
+   ========================= */
+.section{padding:3rem 0;transition:background-color .35s ease}
+main > .section{background:var(--card)}
+main > .section:nth-of-type(even){background:var(--section-alt)}
+
+/* Section titles slightly larger and scale when revealed */
+.container h2{
+  margin-top:0;margin-bottom:1rem;
+  font-size:2rem;
+  transition:transform .28s ease,color .2s ease;
+}
+.reveal.is-visible .container h2{
+  transform:scale(1.06);
+  color:var(--text);
+}
+
+.name{font-weight:700;font-size:2.2rem}
+.lead{color:var(--muted);font-size:1.05rem;max-width:55ch}
+
+/* Generic two-column section grid */
+.section-grid{display:block}
+@media(min-width:800px){
+  .section-grid{
+    display:grid;
+    grid-template-columns:var(--aside-width) 1fr;
+    gap:2rem;
+    align-items:start;
+  }
+  .section-left{
+    padding-top:0;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+  }
+  .section-left h2{
+    margin:0;
+    padding-left:1rem;
+    font-size:1.6rem;
+    text-align:left;
+  }
+  .section-right{padding-top:0}
+}
+@media(max-width:799px){
+  .section-left h2{margin-bottom:0.75rem}
+}
+
+/* =========================
+   ABOUT
+   ========================= */
+.section.about{padding-top:0;padding-bottom:3rem}
+
+/* Legacy grid-about (kept if referenced somewhere) */
+.grid-about{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1.5rem;
+  align-items:center;
+  margin-top:-10rem;
+}
+@media(min-width:900px){
+  .grid-about{grid-template-columns:360px 1fr;gap:2rem}
+}
+
+/* Profile image */
+.profile-img{
+  width:240px;height:240px;
+  object-fit:cover;
+  border-radius:50%;
+  display:block;
+  margin:0 auto;
+  box-shadow:0 6px 20px rgba(12,20,30,0.06);
+  border:2px solid rgba(15,23,36,0.04);
+}
+
+/* About layout override */
+.section.about .section-grid{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:2rem;
+  align-items:start;
+}
+.section.about .section-left{align-items:flex-start}
+
+@media(max-width:900px){
+  .section.about .section-grid{display:block}
+  .profile-img{width:160px;height:160px;margin:0 auto}
+}
+
+/* Center profile column contents so social links align under the image */
+.section.about .about-left{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  width:100%;
+}
+.section.about .about-left .social-links{
+  justify-content:center;
+  width:100%;
+  display:flex;
+}
+.section.about .about-left .role{margin-top:0.5rem}
+
+/* Right column tweaks */
+.about-right{padding:0}
+.research-list{padding-left:1rem}
+
+/* Highlight box */
+.look-highlight{
+  margin-top:1rem;
+  padding:14px;
+  border-radius:10px;
+  background:rgba(47,111,159,0.06);
+  border-left:4px solid rgba(47,111,159,0.9);
+}
+@media(hover:hover) and (pointer:fine){
+  .look-highlight{transition:transform .22s ease,box-shadow .22s ease}
+  .look-highlight:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(14,30,45,0.06)}
+}
+
+/* =========================
+   CARDS / NEWS
+   ========================= */
+.cards{display:grid;gap:1rem}
+.news-grid{grid-template-columns:1fr;}
+@media(min-width:800px){
+  .news-grid{grid-template-columns:repeat(3,1fr)}
+}
+.card{
+  background:var(--card);
+  padding:1rem;
+  border-radius:10px;
+  box-shadow:0 4px 14px rgba(11,17,24,0.04);
+}
+.card h3{margin:.25rem 0}
+.meta{color:var(--muted);font-size:.9rem}
+.excerpt{color:var(--muted);margin-bottom:.5rem}
+.read-more{color:var(--link-color);text-decoration:none}
+
+/* =========================
+   CV / EDUCATION TIMELINE
+   ========================= */
+
+/* Timeline container: add left padding so line/dot never overlap content */
+.cv-list{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  position:relative;
+  padding-left:0; /* Remove left padding, timeline is now on the right side of content */
+}
+
+/* Vertical line - positioned to avoid overlap with logos */
+.cv-list::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:2px;
+  background: linear-gradient(to bottom, rgba(47,111,159,0.35), rgba(47,111,159,0.12));
+  border-radius:2px;
+}
+
+/* Each item */
+.cv-item{
+  position:relative;
+  display:block;
+  padding:0 0 1rem 1.5rem; /* Add left padding to make room for timeline */
+  margin-left:0;
+  border-radius:10px;
+  background:transparent;
+  transition:background .18s ease,border-left .18s ease;
+  border-bottom:1px solid rgba(12,20,30,0.03);
+}
+.cv-item:hover{background:rgba(47,111,159,0.02)}
+
+/* Dot marker aligned to the line - positioned on the left edge */
+.cv-item::after{
+  content:"";
+  position:absolute;
+  left: calc(-1 * (var(--cv-dot-size) / 2 + var(--cv-dot-border)) + 1px);
+  top:22px;
+  width:var(--cv-dot-size);
+  height:var(--cv-dot-size);
+  border-radius:50%;
+  background:#fff;
+  border: var(--cv-dot-border) solid var(--accent);
+  z-index:1;
+}
+
+/* ---- IMPORTANT: constrain logo size on ALL screen sizes (prevents huge logos) ---- */
+.cv-left img.cv-logo{
+  width:44px;
+  height:44px;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  display:block;
+}
+
+/* Align logo with CV head text block */
+.cv-right .cv-head{
+  display:flex;
+  flex-direction:row;
+  align-items:center; /* vertically center logo with text block */
+  gap:0.75rem;
+}
+.cv-right .cv-head img.cv-logo{
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  flex:0 0 auto;
+}
+
+/* Ensure the text block stacks nicely next to the logo */
+.cv-right .cv-head .cv-head-text{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+@media(min-width:800px){
+  .cv-item{
+    display:flex;
+    align-items:flex-start; /* don't center against bullet text */
+    gap:1rem;
+    padding-left:1.5rem; /* space for timeline dot */
+  }
+
+  /* logo column */
+  .cv-left{
+    display:flex;
+    flex:0 0 64px;
+    align-items:flex-start; /* default */
+    justify-content:center;
+    padding-top:2px;
+  }
+
+  /* If you have .cv-head wrapping the 3 lines, center logo to that block */
+  .cv-right .cv-head{
+    min-height:64px;
+    display:flex;
+    flex-direction:row;
+    align-items:center; /* vertically center logo with text block */
+    gap:0.75rem;
+  }
+  .cv-right .cv-head img.cv-logo{
+    width:64px;
+    height:64px;
+  }
+
+  .cv-logo-inline{display:none}
+}
+
+/* Mobile: keep inline logo version (no left logo) */
+@media(max-width:799px){
+  .cv-left{display:none}
+  .cv-logo-inline{display:inline-block}
+}
+
+/* Typography: FINAL single source of truth (no duplicates later) */
+.cv-position{
+  margin:0 0 0.18rem;
+  color:#374151;       /* dark gray */
+  font-weight:700;     /* bold */
+  font-size:0.95rem;
+  line-height:1.15;
+}
+.cv-company{
+  margin:0 0 0.35rem;
+  color:var(--text);   /* black */
+  font-weight:400;     /* not bold */
+  font-size:0.98rem;
+}
+.cv-meta{
+  margin:0 0 0.5rem;
+  font-size:0.86rem;
+  color:#374151;       /* dark gray */
+  font-weight:400;     /* not bold */
+  display:block;
+}
+
+/* Keep body text under entries black, but don't override the three header lines */
+.cv-right p:not(.cv-position):not(.cv-company):not(.cv-meta),
+.cv-right li{
+  font-size:0.9rem;
+  color:var(--text);
+  margin:0 0 0.45rem;
+}
+
+/* Inline logo styling (used on small screens) */
+.cv-logo-inline{
+  width:40px;
+  height:40px;
+  object-fit:contain;
+  vertical-align:middle;
+  margin-right:0.75rem;
+  border-radius:6px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  display:inline-block;
+}
+
+/* (Optional) cv-date class if you use it somewhere */
+.cv-date{
+  font-size:0.95rem;
+  color:var(--muted);
+  white-space:nowrap;
+  display:block;
+  text-align:center;
+  max-width:220px;
+  overflow:visible;
+}
+
+/* Adjust timeline for narrower widths so it stays out of the way */
+@media(max-width:900px){
+  :root{
+    --cv-line-x: 12px;
+    --cv-left-pad: 3rem;
+  }
+  .cv-item{
+    padding-left:1.25rem;
+  }
+}
+
+/* On very small screens hide the decorative timeline (your original behavior) */
+@media(max-width:700px){
+  .cv-list::before{display:none}
+  .cv-item::after{display:none}
+  .cv-list{padding-left:0}
+}
+
+/* =========================
+   PUBLICATIONS
+   ========================= */
+.pub-row{display:flex;gap:1rem;align-items:flex-start;flex-direction:row-reverse}
+.pub-thumb{
+  width:320px;height:180px;
+  border-radius:8px;
+  overflow:hidden;
+  flex:0 0 320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+}
+.pub-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pub-content{flex:1}
+.pub-summary{color:var(--muted);margin:0 0 0.5rem}
+.pub-authors{font-size:0.9rem;color:var(--text);margin:0.5rem 0 0.25rem}
+.pub-venue{font-size:0.85rem;color:var(--muted);margin:0.25rem 0 0.5rem}
+.pub-links{margin-top:0.75rem}
+.pub-paper-link{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  padding:0.4rem 0.75rem;
+  background:var(--icon-color);
+  color:var(--text);
+  text-decoration:none;
+  border-radius:6px;
+  font-size:0.85rem;
+  font-weight:500;
+  transition:opacity 0.2s ease;
+}
+.pub-paper-link:hover{opacity:0.85}
+@media(max-width:900px){
+  .pub-row{flex-direction:column}
+  .pub-thumb{width:100%;height:auto}
+}
+
+/* Video placeholder styles */
+.pub-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  pointer-events:none;
+}
+.pub-thumb .pub-video{width:100%;height:100%;pointer-events:none}
+
+/* =========================
+   SOCIAL LINKS
+   ========================= */
+.social-links{
+  margin-top:0.5rem;
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.social-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  color:var(--icon-color);
+  text-decoration:none;
+  border-radius:6px;
+  line-height:1;
+}
+.social-link svg{width:40px;height:40px;display:block;fill:currentColor}
+.social-link:hover{color:var(--icon-color);opacity:0.8;transform:none}
+.social-link:focus{
+  outline:2px solid var(--icon-color);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* =========================
+   CONTACT
+   ========================= */
+.contact-form{display:flex;flex-direction:column;gap:0.75rem}
+.contact-card{
+  background:var(--card);
+  padding:1rem;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(11,17,24,0.04);
+}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea{
+  width:100%;
+  padding:0.6rem;
+  border-radius:8px;
+  border:1px solid rgba(12,20,30,0.06);
+  font-size:0.95rem;
+}
+.contact-form label{font-size:0.95rem}
+.button{
+  background:var(--icon-color);
+  color:var(--text);
+  border:0;
+  padding:.6rem .9rem;
+  border-radius:8px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+}
+.button:hover{opacity:0.85;text-decoration:none}
+
+/* Body copy inherits Inter (body font) */
+.about-right p,.about-right li,.lead{font-family:inherit}
+
+/* =========================
+   ACCESSIBILITY + MOTION
+   ========================= */
+@media(prefers-reduced-motion:reduce){
+  .reveal{transition:none;transform:none}
+  .social-link,.look-highlight{transition:none}
+}
+.sr-only{
+  position:absolute!important;
+  height:1px;width:1px;
+  overflow:hidden;
+  clip:rect(1px, 1px, 1px, 1px);
+  white-space:nowrap;
+}
+
+/* Ensure CV heads and titles use the Google Sans head font */
+.cv-right .cv-head,
+.cv-position,
+.cv-company,
+.cv-meta,
+.card h3{
+  font-family: var(--font-head);
+}
+
+/* About: use head font for role under profile and align tops */
+.role{font-family: var(--font-head);}
+.section.about .section-grid{align-items:start}
+.section.about .about-left,
+.section.about .about-right{display:flex;flex-direction:column;align-items:flex-start}
+.section.about .about-right .name{margin-top:0}

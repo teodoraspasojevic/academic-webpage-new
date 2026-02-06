@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LSA: Localized Semantic Alignment for Enhancing Temporal Consistency in Traffic Video Generation</title>
+  <link href="/assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/index.html">Teodora Spasojevic</a>
+      <nav class="site-nav">
+        <ul>
+          <li><a href="/index.html#about">About</a></li>
+          <li><a href="/index.html#cv">Experience</a></li>
+          <li><a href="/index.html#publications" class="active">Publications</a></li>
+          <li><a href="/index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1>LSA: Localized Semantic Alignment for Enhancing Temporal Consistency in Traffic Video Generation</h1>
+      <p class="muted">Mirlan Karimov*, <strong>Teodora Spasojevic</strong>*, Markus Braun, Julian Wiederer, Vasileios Belagiannis, Marc Pollefeys — IEEE Intelligent Vehicles (IV) 2026</p>
+      <p class="muted" style="font-style: italic;">* Indicates Equal Contributions</p>
+
+      <div style="display:flex;gap:1rem;align-items:center;margin-top:1rem;flex-direction:row-reverse;">
+        <video autoplay muted loop playsinline style="width:640px;height:auto;border-radius:8px;object-fit:cover;flex-shrink:0;">
+          <source src="/assets/vids/Teaser.mp4" type="video/mp4">
+        </video>
+        <div>
+          <h3>Abstract</h3>
+          <p style="text-align:justify;">Controllable video generation has emerged as a versatile tool for autonomous driving, enabling realistic synthesis of traffic scenarios. However, existing methods depend on control signals at inference time to guide the generative model towards temporally consistent generation of dynamic objects, limiting their utility as scalable and generalizable data engines. In this work, we propose Localized Semantic Alignment (LSA), a simple yet effective framework for fine-tuning pre-trained video generation models. LSA enhances temporal consistency by aligning semantic features between ground-truth and generated video clips. Specifically, we compare the output of an off-the-shelf feature extraction model between the ground-truth and generated video clips localized around dynamic objects inducing a semantic feature consistency loss. We fine-tune the base model by combining this loss with the standard diffusion loss. The model fine-tuned for a single epoch with our novel loss outperforms the baselines in common video generation evaluation metrics. To further test the temporal consistency in generated videos we adapt two additional metrics from object detection task, namely mAP and mIoU. Extensive experiments on nuScenes and KITTI datasets show the effectiveness of our approach in enhancing temporal consistency in video generation without the need for external control signals during inference and any computational overheads.</p>
+        </div>
+      </div>
+
+
+      <h3>Key contributions</h3>
+      <ul>
+        <li> We introduce LSA, a fine-tuning framework that improves the temporal consistency of pre-trained video generation models within a single epoch of fine-tuning.</li>
+        <li> We demonstrate that LSA outperforms a two-step conditional video generation method in terms of both standard  video quality and detection-based evaluation metrics,  while being more computationally efficient.</li>
+        <li>We show that SVD fine-tuned with LSA can serve as  a drop-in enhancement for conditional video generation,  consistently improving the quality and temporal coherence of generated videos.</li>
+      </ul>
+
+      <div style="display:flex;gap:1rem;align-items:center;margin-top:1rem;flex-direction:row-reverse;">
+        <img src="/assets/img/paper_figure_final_vids.svg" alt="LSA method overview" style="width:640px;height:auto;border-radius:8px;object-fit:cover;flex-shrink:0;"/>
+        <div>
+          <h3>Method Overview</h3>
+          <p style="text-align:justify;">Overview of LSA (right), our proposed framework for improving temporal consistency in video generation. LSA introduces a semantic feature consistency loss that enforces alignment between the semantic representations of SVD-generated frames x̂ and their corresponding ground-truth frames x0, specifically within dynamic-object regions defined by ground-truth bounding boxes bbgt, promoting appearance consistency and temporally stable localization. Semantic features are extracted with DINOv2, while ground-truth bounding boxes provide spatial supervision. The inference stage of SVD fine-tuned with LSA is identical to the original SVD, hence not requiring bounding boxes. Example input frames are from nuScenes.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:1.5rem;display:flex;gap:0.75rem;">
+        <a href="https://teodoraspasojevic.github.io/lsa-project-page/" target="_blank" rel="noopener noreferrer" class="button">🌐 Project Page</a>
+        <a href="https://arxiv.org/abs/2602.05966" target="_blank" rel="noopener noreferrer" class="button">📄 arXiv</a>
+      </p>
+
+      <p style="margin-top:2rem;">Back to <a href="/index.html#publications">publications</a>.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">&copy; 2026 Teodora Spasojevic</div>
+  </footer>
+</body>
+</html>
+
