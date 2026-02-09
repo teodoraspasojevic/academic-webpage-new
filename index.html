@@ -19,6 +19,14 @@
         <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
       </button>
 
+      <!-- Theme toggle (light/dark) placed back between brand and nav; sun icon stroke remains black -->
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme" aria-pressed="false" title="Toggle color theme">
+        <!-- sun icon (visible in light theme) -->
+        <svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l1.42-1.42M20.49 3.51l-1.42 1.42" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="12" cy="12" r="3" stroke="#000" stroke-width="1.2" fill="none"/></svg>
+        <!-- moon icon (visible in dark theme) -->
+        <svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+
       <nav id="site-nav" class="site-nav" role="navigation">
         <ul>
           <li><a href="#about">About</a></li>
@@ -30,14 +38,6 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-
-      <!-- Theme toggle (light/dark) - moved here so it sits after the top menu links. Sun icon stroke set to black for light-mode visibility -->
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme" aria-pressed="false" title="Toggle color theme">
-        <!-- sun icon (visible in light theme) -->
-        <svg class="icon sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l1.42-1.42M20.49 3.51l-1.42 1.42" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="12" cy="12" r="3" stroke="#000" stroke-width="1.2" fill="none"/></svg>
-        <!-- moon icon (visible in dark theme) -->
-        <svg class="icon moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-      </button>
     </div>
   </header>
 
