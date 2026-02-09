@@ -599,3 +599,39 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
 .section.about .about-left,
 .section.about .about-right{display:flex;flex-direction:column;align-items:flex-start}
 .section.about .about-right .name{margin-top:0}
+
+/* =========================
+   DOCUMENT DOWNLOAD BUTTONS
+   ========================= */
+/* Small row of download buttons used under profile and in CV section */
+.doc-buttons{
+  display:flex;
+  gap:0.6rem;
+  align-items:center;
+  justify-content:center;
+  margin-top:0.75rem;
+  flex-wrap:wrap;
+}
+
+/* Individual download button */
+.doc-button{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.4rem 0.75rem;
+  background:var(--icon-color);
+  color:var(--text);
+  text-decoration:none;
+  border-radius:8px;
+  font-size:0.9rem;
+  font-weight:600;
+  border:0;
+}
+.doc-button svg{width:18px;height:18px;flex:0 0 auto}
+.doc-button:hover{opacity:0.9}
+
+/* On larger screens keep the doc-buttons aligned to the left in CV section (so they don't collide with timeline) */
+@media(min-width:800px){
+  .section#cv .doc-buttons{justify-content:flex-start}
+}
+
