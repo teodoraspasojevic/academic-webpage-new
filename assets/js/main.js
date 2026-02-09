@@ -11,6 +11,36 @@
     });
   }
 
+  // THEME TOGGLE: persist user preference and respect system setting
+  const themeToggle = document.getElementById('theme-toggle');
+  const applyTheme = (mode) => {
+    if(mode === 'dark'){
+      document.body.classList.add('dark');
+      if(themeToggle) themeToggle.setAttribute('aria-pressed','true');
+    } else {
+      document.body.classList.remove('dark');
+      if(themeToggle) themeToggle.setAttribute('aria-pressed','false');
+    }
+  };
+
+  // read saved preference
+  const saved = localStorage.getItem('theme');
+  if(saved) applyTheme(saved);
+  else {
+    // no saved preference — respect OS preference
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+
+  if(themeToggle){
+    themeToggle.addEventListener('click', ()=>{
+      const isDark = document.body.classList.contains('dark');
+      const next = isDark ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+  }
+
   // Respect user preference for reduced motion
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(prefersReduced) return;

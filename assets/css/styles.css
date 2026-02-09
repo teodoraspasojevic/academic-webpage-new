@@ -11,10 +11,19 @@
   --accent: #2F6F9F;
   --link-color: #6878AE;    /* hyperlinks */
   --icon-color: #EFCED1;    /* icons and buttons */
+  --button-bg: var(--icon-color); /* button background (can differ in dark mode) */
   --radius: 12px;
   --max-width: 1400px;
   --section-alt: #F4F6F7;
   --aside-width: 360px;
+  --header-bg: rgba(255,255,255,0.96);
+  --toggle-bg: transparent;
+  --toggle-border: transparent;
+
+  /* NEW: form field + borders (so dark mode can tone down white fields) */
+  --form-field: #FFFFFF;
+  --input-border: rgba(12,20,30,0.06);
+  --card-border: rgba(12,20,30,0.04);
 
   /* Fonts */
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -69,7 +78,7 @@ a:hover{
   position:fixed;top:0;left:0;right:0;
   backdrop-filter: blur(6px);
   z-index:9999;
-  background:rgba(255,255,255,0.96);
+  background:var(--header-bg);
   box-shadow:0 1px 0 rgba(12,20,30,0.04);
 }
 .site-header .container{
@@ -252,6 +261,7 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   padding:1rem;
   border-radius:10px;
   box-shadow:0 4px 14px rgba(11,17,24,0.04);
+  border:1px solid var(--card-border); /* make card stand out from section */
 }
 .card h3{margin:.25rem 0}
 .meta{color:var(--muted);font-size:.9rem}
@@ -478,7 +488,7 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   align-items:center;
   gap:0.35rem;
   padding:0.4rem 0.75rem;
-  background:var(--icon-color);
+  background:var(--button-bg);
   color:var(--text);
   text-decoration:none;
   border-radius:6px;
@@ -548,12 +558,14 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   width:100%;
   padding:0.6rem;
   border-radius:8px;
-  border:1px solid rgba(12,20,30,0.06);
+  border:1px solid var(--input-border);
   font-size:0.95rem;
+  background:var(--form-field); /* use variable so dark mode can tone this down */
+  color:var(--text);
 }
 .contact-form label{font-size:0.95rem}
 .button{
-  background:var(--icon-color);
+  background:var(--button-bg);
   color:var(--text);
   border:0;
   padding:.6rem .9rem;
@@ -561,10 +573,13 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   cursor:pointer;
   text-decoration:none;
   display:inline-block;
-  width:100%; /* make the button span the full width of the form */
+  width:auto; /* only make full-width where appropriate (see .contact-form .button) */
   text-align:center;
 }
 .button:hover{opacity:0.85;text-decoration:none}
+
+/* Ensure form submit/button spans full width inside the contact form (preserve previous behavior) */
+.contact-form .button{width:100%}
 
 /* Body copy inherits Inter (body font) */
 .about-right p,.about-right li,.lead{font-family:inherit}
@@ -619,7 +634,7 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   align-items:center;
   gap:0.5rem;
   padding:0.4rem 0.75rem;
-  background:var(--icon-color);
+  background:var(--button-bg);
   color:var(--text);
   text-decoration:none;
   border-radius:8px;
@@ -635,3 +650,78 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   .section#cv .doc-buttons{justify-content:flex-start}
 }
 
+/* Theme toggle button */
+.theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:.35rem;
+  margin-left:.5rem;
+  border-radius:8px;
+  background:var(--toggle-bg);
+  border:1px solid var(--toggle-border);
+  color:var(--icon-color);
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(11,17,24,0.04);
+}
+.theme-toggle .icon{width:20px;height:20px;display:block}
+.theme-toggle .moon{display:none}
+.theme-toggle[aria-pressed="true"] .sun{display:none}
+.theme-toggle[aria-pressed="true"] .moon{display:block}
+
+/* Dark mode variables (defaults to light) */
+@media (prefers-color-scheme: dark) {
+  :root{
+    --bg: #0B1220;
+    --card: #081018;
+    --text: #E6EEF8;
+    --muted: #9BA9C7;
+    --accent: #59A6D6;
+    --link-color: #EFCED1; /* user wanted links color */
+    --icon-color: #C5CEE3; /* icons/buttons color */
+    --button-bg: #8FA0B8; /* slightly darker button color for dark mode */
+    --section-alt: #07101a; /* slightly different from card */
+    --header-bg: rgba(4,8,12,0.6);
+    --toggle-bg: rgba(255,255,255,0.04);
+    --toggle-border: rgba(255,255,255,0.06);
+
+    /* tone down bright white form fields in dark mode */
+    --form-field: rgba(230,238,248,0.04); /* very subtle light overlay */
+    --input-border: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.04);
+  }
+}
+
+body.dark{
+  --bg: #0B1220;
+  --card: #081018;
+  --text: #E6EEF8;
+  --muted: #9BA9C7;
+  --accent: #59A6D6;
+  --link-color: #EFCED1;
+  --icon-color: #C5CEE3;
+  --button-bg: #8FA0B8; /* explicit dark toggle uses darker button bg */
+  --section-alt: #07101a; /* slightly darker than card for alternating sections */
+  --header-bg: rgba(4,8,12,0.6);
+  --toggle-bg: rgba(255,255,255,0.04);
+  --toggle-border: rgba(255,255,255,0.06);
+
+  /* tone down bright white form fields when using explicit dark toggle */
+  --form-field: rgba(230,238,248,0.04);
+  --input-border: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.04);
+}
+
+/* Ensure links and icon colors follow requested palette */
+a{color:var(--link-color)}
+.social-link{color:var(--icon-color)}
+.button, .doc-button, .pub-paper-link{background:var(--button-bg);color:var(--text)}
+
+/* Tweak alternating section background to use variable so dark mode changes it */
+main > .section{background:var(--card)}
+main > .section:nth-of-type(even){background:var(--section-alt)}
+
+/* Make header text/icon color adapt to theme */
+.site-header .container{background:transparent}
+.brand{color:var(--text)}
+.nav-toggle{color:var(--icon-color)}
