@@ -76,7 +76,10 @@
   // Simple contact form handling (client-side only)
   // Supports two modes:
   // 1) If the form has a `data-endpoint` attribute (e.g. Formspree URL), it will POST the form to that endpoint.
-  // 2) Otherwise it falls back to opening the user's default mail client with a prefilled mailto: link.
+  // 2) If the form has an absolute `action` URL, that will be used as the endpoint.
+  // 3) Otherwise it falls back to opening the user's default mail client with a prefilled mailto: link.
+  // If you have a known endpoint (e.g. Formspree), provide it here as a last-resort fallback so published pages that strip attributes still work.
+  const DEFAULT_FORM_ENDPOINT = 'https://formspree.io/f/xreabkee';
   const form = document.getElementById('contact-form');
   const status = document.getElementById('form-status');
   if(form && status){
@@ -84,7 +87,22 @@
       e.preventDefault();
       status.textContent = 'Sending...';
 
-      const endpoint = form.dataset.endpoint && form.dataset.endpoint.trim();
+      // Prefer explicit data-endpoint, otherwise use absolute action URL if available
+      let endpoint = '';
+      if(form.dataset && form.dataset.endpoint && form.dataset.endpoint.trim()){
+        endpoint = form.dataset.endpoint.trim();
+      } else if(form.action && form.action.trim()){
+        const act = form.action.trim();
+        // use action only if it's an absolute URL (http/https or protocol-relative)
+        if(act.startsWith('http') || act.startsWith('//')){
+          endpoint = act;
+        }
+      }
+
+      // Last-resort: use hardcoded DEFAULT_FORM_ENDPOINT if nothing else found
+      if(!endpoint && DEFAULT_FORM_ENDPOINT){
+        endpoint = DEFAULT_FORM_ENDPOINT;
+      }
 
       // Helper to show final state
       const finish = (msg, ok=true) => {
@@ -104,10 +122,23 @@
             let data;
             try{ data = await res.json(); }catch(e){/*ignore*/}
             console.error('Form submit error', res.status, data);
+            // If fetch failed due to CORS or server rejecting JSON, try native submit once as fallback
+            if(!form.dataset.nativeTried){
+              form.dataset.nativeTried = '1';
+              // submit the form natively (this will perform a regular POST to the action URL)
+              form.submit();
+              return;
+            }
             finish('Sorry — there was a problem sending the message.');
           }
         }catch(err){
           console.error('Form submit exception', err);
+          // If fetch threw (network/CORS), fallback to native submit once
+          if(!form.dataset.nativeTried){
+            form.dataset.nativeTried = '1';
+            form.submit();
+            return;
+          }
           finish('Error sending form — please try again later.');
         }
         return;
