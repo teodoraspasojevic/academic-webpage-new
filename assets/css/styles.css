@@ -533,13 +533,15 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
 /* =========================
    CONTACT
    ========================= */
-.contact-form{display:flex;flex-direction:column;gap:0.75rem}
+.contact-form{display:flex;flex-direction:column;gap:0.75rem;width:100%}
 .contact-card{
   background:var(--card);
   padding:1rem;
   border-radius:12px;
   box-shadow:0 8px 20px rgba(11,17,24,0.04);
+  width:100%; /* ensure the card can expand to available column width */
 }
+.contact-card .social-links{margin-bottom:0.75rem;justify-content:flex-start}
 .contact-form input[type="text"],
 .contact-form input[type="email"],
 .contact-form textarea{
@@ -559,6 +561,8 @@ main > .section:nth-of-type(even){background:var(--section-alt)}
   cursor:pointer;
   text-decoration:none;
   display:inline-block;
+  width:100%; /* make the button span the full width of the form */
+  text-align:center;
 }
 .button:hover{opacity:0.85;text-decoration:none}
 
